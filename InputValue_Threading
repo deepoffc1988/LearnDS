@@ -1,0 +1,23 @@
+import threading
+
+def read_input():
+    global input_text
+    input_text = input("Enter text: ")
+
+def interrupt_on_word(word):
+    while True:
+        if input_text.endswith(word):
+            print("Interrupting input!")
+            break
+
+input_text = ""
+input_thread = threading.Thread(target=read_input)
+interrupt_thread = threading.Thread(target=interrupt_on_word, args=("stop",))
+
+input_thread.start()
+interrupt_thread.start()
+
+input_thread.join()
+interrupt_thread.join()
+
+print("Final input:", input_text)
